@@ -100,11 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwgUsM8OJaT21Fme557jC3myByjTxeODTBz57jZzAU5YSS8d0jnT0owfJXJrStEAn0khg/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
             
             // Получение данных формы
             const formData = {
-                city: document.getElementById('cityInput').value, // Обновлено для нового селектора городов
+                city: document.getElementById('cityInput').value,
                 vacancy: document.getElementById('vacancy').value,
                 citizenship: document.getElementById('citizenship').value,
                 fullname: document.getElementById('fullname').value,
@@ -135,28 +135,35 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Альтернативный способ отправки - через iframe
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
+            // Создаем форму для отправки данных
+            const tempForm = document.createElement('form');
+            tempForm.method = 'POST';
+            tempForm.action = scriptURL;
+            tempForm.style.display = 'none';
             
-            // Создаём форму внутри iframe с использованием encodeURIComponent для безопасной передачи данных
-            const formHTML = `
-                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
-                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
-                    <button type="submit">Submit</button>
-                </form>
-            `;
+            // Добавляем данные в форму
+            const dataField = document.createElement('input');
+            dataField.type = 'hidden';
+            dataField.name = 'data';
+            dataField.value = encodeURIComponent(JSON.stringify(formData));
+            tempForm.appendChild(dataField);
             
-            // Вставляем форму в iframe и отправляем
-            iframe.contentWindow.document.open();
-            iframe.contentWindow.document.write(formHTML);
-            iframe.contentWindow.document.close();
+            // Добавляем форму в DOM
+            document.body.appendChild(tempForm);
             
-            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
+            // Отправляем форму и перехватываем результат
+            const formSubmitHandler = function(callback) {
+                // Устанавливаем таймер для успешного завершения
+                setTimeout(function() {
+                    callback();
+                }, 2000);
+                
+                // Отправляем форму
+                tempForm.submit();
+            };
             
-            // Устанавливаем таймер для успешного завершения независимо от результата
-            setTimeout(function() {
+            // Отправляем данные
+            formSubmitHandler(function() {
                 // Показываем сообщение об успешной отправке
                 console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
@@ -166,12 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Удаляем iframe
-                document.body.removeChild(iframe);
-            }, 2000);
-            
-            // Отправляем форму
-            hiddenForm.submit();
+                // Удаляем временную форму
+                if (document.body.contains(tempForm)) {
+                    document.body.removeChild(tempForm);
+                }
+            });
         });
     }
 
