@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор города</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+
+        .city-selector-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: white;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .city-input {
+            width: 100%;
+            padding: 10px 30px 10px 12px;
+            border: 1px solid #FF2D55;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .dropdown-arrow {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .dropdown-arrow svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #FF2D55;
+            stroke-width: 2px;
+        }
+
+        .cities-list {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            margin-top: -1px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .city-option {
+            padding: 10px 12px;
+            cursor: pointer;
+        }
+
+        .city-option:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .moscow, .spb {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="city-selector-container">
+        <div class="input-wrapper">
+            <input type="text" class="city-input" id="cityInput" placeholder="Город">
+            <div class="dropdown-arrow" id="dropdownToggle">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </div>
+        <div class="cities-list" id="citiesList">
+            <div class="city-option moscow">Москва</div>
+            <div class="city-option spb">Санкт-Петербург</div>
+            <div class="city-option">Абакан</div>
+            <div class="city-option">Адлер</div>
+            <div class="city-option">Азов</div>
+            <div class="city-option">Аксай</div>
+            <div class="city-option">Александров</div>
+            <div class="city-option">Алексин</div>
+            <div class="city-option">Альметьевск</div>
+            <div class="city-option">Анапа</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cityInput = document.getElementById('cityInput');
+            const dropdownToggle = document.getElementById('dropdownToggle');
+            const citiesList = document.getElementById('citiesList');
+            const cityOptions = document.querySelectorAll('.city-option');
+            
+            // Скрыть список городов при загрузке
+            citiesList.style.display = 'none';
+            
+            // Показать/скрыть список при клике на стрелку
+            dropdownToggle.addEventListener('click', function() {
+                if (citiesList.style.display === 'none') {
+                    citiesList.style.display = 'block';
+                } else {
+                    citiesList.style.display = 'none';
+                }
+            });
+            
+            // Показать список городов при фокусе на поле ввода
+            cityInput.addEventListener('focus', function() {
+                citiesList.style.display = 'block';
+            });
+            
+            // Выбор города из списка
+            cityOptions.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    cityInput.value = this.textContent;
+                    citiesList.style.display = 'none';
+                    console.log('Выбран город:', cityInput.value);
+                });
+            });
+            
+            // Фильтрация городов при вводе
+            cityInput.addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                cityOptions.forEach(function(option) {
+                    const text = option.textContent.toLowerCase();
+                    if (text.indexOf(filter) > -1) {
+                        option.style.display = '';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                
+                // Показать список при вводе
+                citiesList.style.display = 'block';
+            });
+            
+            // Закрыть список при клике вне списка
+            document.addEventListener('click', function(e) {
+                if (!citiesList.contains(e.target) && e.target !== cityInput && e.target !== dropdownToggle && !dropdownToggle.contains(e.target)) {
+                    citiesList.style.display = 'none';
+                }
+            });
+            
+            // Выбор города при нажатии Enter
+            cityInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    // Найти первый видимый город в списке
+                    const visibleOption = [...cityOptions].find(option => option.style.display !== 'none');
+                    if (visibleOption) {
+                        cityInput.value = visibleOption.textContent;
+                    }
+                    citiesList.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

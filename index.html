@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Самокат - Работа курьером</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Встроенные стили для предотвращения проблем с кешированием CSS -->
+    <style>
+        :root {
+            --primary-color: #FF2D55;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">САМОКАТ</div>
+            <nav>
+                <ul>
+                    <li><a href="#bonuses">Бонусы</a></li>
+                    <li><a href="#vacancies">Вакансии</a></li>
+                    <li><a href="#how-to-start">Как начать</a></li>
+                    <li><a href="#faq">Частые вопросы</a></li>
+                </ul>
+            </nav>
+            <button class="apply-button">Оставить заявку</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Доход до 200 320 ₽ в месяц</h1>
+                <p>Работайте на своих условиях</p>
+                <button class="apply-button neon-button">Оставить заявку</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="vacancies" class="vacancies">
+        <div class="container">
+            <h2>Кем ты хочешь работать?</h2>
+            <div class="vacancy-cards">
+                <div class="vacancy-card">
+                    <h3>Пеший курьер</h3>
+                    <p>Доход до 2 000 ₽ в день</p>
+                    <a href="#application-form" class="details-button">Подробнее</a>
+                </div>
+                <div class="vacancy-card">
+                    <h3>Велокурьер</h3>
+                    <p>Доход до 3 000 ₽ в день</p>
+                    <a href="#application-form" class="details-button">Подробнее</a>
+                </div>
+                <div class="vacancy-card">
+                    <h3>Автокурьер</h3>
+                    <p>Доход до 4 000 ₽ в день</p>
+                    <a href="#application-form" class="details-button">Подробнее</a>
+                </div>
+                <div class="vacancy-card">
+                    <h3>Сборщик</h3>
+                    <p>Доход до 2 000 ₽ в день</p>
+                    <a href="#application-form" class="details-button">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="conditions">
+        <div class="container">
+            <h2>Настройте условия под себя</h2>
+            <div class="conditions-grid">
+                <div class="condition-box">
+                    <h3>Удобное расписание</h3>
+                    <p>От нескольких часов до полной недели</p>
+                </div>
+                <div class="condition-box">
+                    <h3>Район на выбор</h3>
+                    <p>В центре города или рядом с домом</p>
+                </div>
+                <div class="condition-box">
+                    <h3>Выплаты каждую неделю</h3>
+                    <p>Без задержек и переносов</p>
+                </div>
+                <div class="condition-box">
+                    <h3>Любой способ доставки</h3>
+                    <p>Пешком, на велосипеде или авто</p>
+                </div>
+                <div class="condition-box">
+                    <h3>Онлайн оформление</h3>
+                    <p>И обучение для вакансии экспресс-курьера</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bonuses" class="bonuses">
+        <div class="container">
+            <h2>Бонусы уже настроили под вас</h2>
+            <div class="bonuses-grid">
+                <div class="bonus-box">
+                    <h3>Скидки на связь</h3>
+                    <p>Специальные тарифы мобильной связи для сборщиков и курьеров</p>
+                </div>
+                <div class="bonus-box">
+                    <h3>Награда за друзей</h3>
+                    <p>Получайте до 3 000 ₽ за каждую рекомендацию</p>
+                </div>
+                <div class="bonus-box">
+                    <h3>Чаевые от клиентов</h3>
+                    <p>Приятное дополнение к вашему доходу</p>
+                </div>
+                <div class="bonus-box">
+                    <h3>Транспорт со скидкой</h3>
+                    <p>До 30% на аренду или покупку велосипеда. До 7 000 ₽ за скидку вашего транспорта</p>
+                </div>
+                <div class="bonus-box">
+                    <h3>Заправка и ТО дешевле</h3>
+                    <p>Чтобы не было лишних расходов — только доходы</p>
+                </div>
+                <div class="bonus-box">
+                    <h3>Скидки от партнёров</h3>
+                    <p>До 60% на еду из ресторанов, онлайн-сервисы и поддержку здоровья</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="requirements">
+        <div class="container">
+            <h2>Для сотрудничества вам нужны</h2>
+            <div class="requirements-grid">
+                <div class="requirement-box">
+                    <h3>Смартфон</h3>
+                    <p>Готовы предоставить в аренду с правом выкупа</p>
+                </div>
+                <div class="requirement-box">
+                    <h3>Самозанятость</h3>
+                    <p>Обеспечит ниже налог и гибкое расписание</p>
+                </div>
+                <div class="requirement-box">
+                    <h3>Медкнижка</h3>
+                    <p>Можно оформить позже, есть специальные предложения для партнеров Самоката</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="steps">
+        <div class="container">
+            <h2>Всего 4 шага</h2>
+            <div class="steps-grid">
+                <div class="step-box">
+                    <div class="step-number">1</div>
+                    <p>Откликнуться на сайте</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-number">2</div>
+                    <p>Пройти оформление</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-number">3</div>
+                    <p>Получить брендированную одежду</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-number">4</div>
+                    <p>Выполнить первые заказы и получить доход</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-to-start" class="application">
+        <div class="container">
+            <h2>Начать сотрудничество с Самокатом</h2>
+            <p>Заполни анкету и менеджер<br>с тобою свяжется</p>
+            <form id="application-form" class="application-form">
+                <div class="form-fields">
+                    <div class="input-wrapper">
+                    <input type="text" class="city-input" id="cityInput" name="city" placeholder="Город">
+                    <div class="dropdown-arrow" id="dropdownToggle">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div class="cities-list" id="citiesList">
+                    <div class="city-option moscow">Москва</div>
+                    <div class="city-option spb">Санкт-Петербург</div>
+                    <div class="city-option">Новосибирск</div>
+                    <div class="city-option">Красноярск</div>
+                    <div class="city-option">Омск</div>
+                    <div class="city-option">Тула</div>
+                    <div class="city-option">Екатеринбург</div>
+                    <div class="city-option">Пермь</div>
+                    <div class="city-option">Казань</div>
+                    <div class="city-option">Уфа</div>
+                    <div class="city-option">Нижний Новгород</div>
+                    <div class="city-option">Пенза</div>
+                    <div class="city-option">Самара</div>
+                    <div class="city-option">Саратов</div>
+                </div>
+                    <select id="vacancy" name="vacancy">
+                        <option value="" disabled selected>Вакансия</option>
+                        <option value="Пеший курьер">Пеший курьер</option>
+                        <option value="Велокурьер">Велокурьер</option>
+                        <option value="Автокурьер">Автокурьер</option>
+                        <option value="Сборщик">Сборщик</option>
+                    </select>
+                    <input type="text" id="citizenship" name="citizenship" placeholder="Гражданство">
+                    <input type="text" id="firstname" name="firstname" placeholder="Имя">
+                    <input type="text" id="lastname" name="lastname" placeholder="Фамилия">
+                    <input type="number" id="age" name="age" placeholder="Возраст" min="16" max="99">
+                    <input type="tel" id="phone" name="phone" placeholder="+7 (900) 000-00-00">
+                    <button type="submit" class="submit-button">Оставить заявку</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2>Отзывы</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>«Многие, кто ищет работу на личном авто, выбирают между такси и доставкой»</p>
+                        <p class="testimonial-details">В доставке удаётся лучше сберечь машину. Пробег меньше: курьер ездит по одному району, не нужно кататься по всему городу и в область. Кроме этого, здесь нет такого износа салона, так как нет пассажиров</p>
+                        <p class="testimonial-author">Павел, Нижний Новгород</p>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>«У меня маленькие дети, поэтому при выборе работы я смотрю на график»</p>
+                        <p class="testimonial-details">В Купере не обременительный, легко изменять дни и построить график под себя. Допустим, ребёнок заболел, и я понимаю, что завтра выйти не смогу. Просто сообщаю куратору и остаюсь дома, а чтобы не терять заработок, потом отрабатываю в свой выходной</p>
+                        <p class="testimonial-author">Екатерина, Санкт-Петербург</p>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>«Что радует больше всего: регулярные выплаты и доброжелательное отношение»</p>
+                        <p class="testimonial-details">Все организационные вопросы быстро решаются с настройщиком. Оплата высокая, заказов всегда много, но это, я думаю, зависит от района и магазина, в котором вы работаете. У нас спрос высокий, такого, чтобы сидели без работы, не бывает</p>
+                        <p class="testimonial-author">Ирина, Москва</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2>Частые вопросы</h2>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Что такое Самокат?</summary>
+                    <div class="faq-answer">
+                        <p>Самокат — это сервис доставки продуктов из магазинов и ресторанов. Мы предлагаем работу курьерам на разных видах транспорта и сборщикам заказов.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Что мне понадобится?</summary>
+                    <div class="faq-answer">
+                        <p>Для начала работы вам понадобится: смартфон для приема заказов, оформленная самозанятость и медкнижка (с оформлением медкнижки мы поможем).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Кто такие самозанятые?</summary>
+                    <div class="faq-answer">
+                        <p>Самозанятые — это люди, которые работают на себя и платят налог на профессиональный доход. Оформить самозанятость можно бесплатно в приложении "Мой налог" за несколько минут.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Как получить статус самозанятого?</summary>
+                    <div class="faq-answer">
+                        <p>Скачайте приложение "Мой налог", зарегистрируйтесь с помощью паспорта и СНИЛС или через личный кабинет налогоплательщика. После регистрации вы сразу можете начать работать.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Можно ли выбрать ближайшую к дому точку?</summary>
+                    <div class="faq-answer">
+                        <p>Да, при оформлении вы можете указать предпочтительный район работы, и мы постараемся подобрать для вас точку как можно ближе к дому.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Я могу сам выбирать своё расписание?</summary>
+                    <div class="faq-answer">
+                        <p>Да, мы предлагаем гибкий график работы. Вы можете работать от нескольких часов в день до полной занятости, выбирать удобные дни и время.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section class="cities">
+        <div class="container">
+            <h2>Найдите свой город</h2>
+            <div class="cities-grid">
+                <a href="#application-form" class="city-link">Москва</a>
+                <a href="#application-form" class="city-link">Санкт-Петербург</a>
+                <a href="#application-form" class="city-link">Новосибирск</a>
+                <a href="#application-form" class="city-link">Волгоград</a>
+                <a href="#application-form" class="city-link">Казань</a>
+                <a href="#application-form" class="city-link">Нижний Новгород</a>
+                <a href="#application-form" class="city-link">Уфа</a>
+                <a href="#application-form" class="city-link">Екатеринбург</a>
+                <a href="#application-form" class="city-link">Самара</a>
+                <a href="#application-form" class="city-link">Омск</a>
+                <a href="#application-form" class="city-link">Пермь</a>
+                <a href="#application-form" class="city-link">Краснодар</a>
+            </div>
+            <a href="#application-form" class="other-cities-button">Другие города</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">САМОКАТ</div>
+                <div class="footer-social">
+                    <a href="#" class="social-icon">Telegram</a>
+                    <a href="#" class="social-icon">VK</a>
+                    <a href="#" class="social-icon">Дзен</a>
+                    <a href="tel:+78005004954" class="footer-phone">8 (800) 500-49-54</a>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <p>© 2023 — 2025 ООО «Инс ньюарт Сервис»</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
