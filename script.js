@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxBCYLyjBvdyRsYZsPr6HZg8gFw421CzMi5z9_bE94u_wVQwRXxL-D60l3VgA9MtJpa8g/exec';
             
             // Получение данных формы
             const formData = {
@@ -135,15 +135,16 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Альтернативный способ отправки - через iframe
+            // Альтернативный способ отправки - через iframe, без открытия нового окна
             const iframe = document.createElement('iframe');
+            iframe.name = "hidden_iframe";
             iframe.style.display = 'none';
             document.body.appendChild(iframe);
             
             // Создаём форму внутри iframe
             const formHTML = `
-                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
-                    <input type="hidden" name="data" value='${JSON.stringify(formData)}'>
+                <form id="hidden-form" action="${scriptURL}" method="POST" target="hidden_iframe">
+                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
                 </form>
             `;
             
