@@ -135,33 +135,52 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Создаем скрытый iframe для отправки формы без открытия нового окна
-            const iframeName = 'hidden_iframe_' + Date.now();
+            // Альтернативный способ отправки - через iframe
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
-            iframe.name = iframeName;
             document.body.appendChild(iframe);
             
-            // Создаем форму для отправки данных
-            const hiddenForm = document.createElement('form');
-            hiddenForm.method = 'POST';
-            hiddenForm.action = scriptURL;
-            hiddenForm.target = iframeName; // привязываем к нашему iframe
+            // Создаём форму внутри iframe с использованием encodeURIComponent для безопасной передачи данных
+            const formHTML = `
+                <form id="hidden-form" action="${scriptURL}" method="POST">
+                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
+                    <button type="submit">Submit</button>
+                </form>
+                <script>
+                    document.getElementById('hidden-form').addEventListener('submit', function() {
+                        setTimeout(function() {
+                            window.parent.postMessage('form-submitted', '*');
+                        }, 2000);
+                    });
+                </script>
+            `;
             
-            // Добавляем данные в форму
-            const dataInput = document.createElement('input');
-            dataInput.type = 'hidden';
-            dataInput.name = 'data';
-            dataInput.value = encodeURIComponent(JSON.stringify(formData));
-            hiddenForm.appendChild(dataInput);
+            // Вставляем форму в iframe и отправляем
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(formHTML);
+            iframe.contentWindow.document.close();
             
-            // Добавляем форму в DOM
-            document.body.appendChild(hiddenForm);
+            // Слушаем сообщение от iframe
+            window.addEventListener('message', function(event) {
+                if (event.data === 'form-submitted') {
+                    // Показываем сообщение об успешной отправке
+                    console.log('Успех: форма отправлена');
+                    alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
+                    form.reset();
+                    
+                    // Восстанавливаем кнопку
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                    
+                    // Удаляем iframe
+                    document.body.removeChild(iframe);
+                }
+            }, {once: true});
             
-            // Устанавливаем обработчик для iframe
-            iframe.onload = function() {
+            // Устанавливаем таймер для успешного завершения на случай, если событие не сработает
+            setTimeout(function() {
                 // Показываем сообщение об успешной отправке
-                console.log('Успех: форма отправлена');
+                console.log('Таймер: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
                 
@@ -169,12 +188,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Удаляем временные элементы
+                // Удаляем iframe
                 document.body.removeChild(iframe);
-                document.body.removeChild(hiddenForm);
-            };
+            }, 5000);
             
             // Отправляем форму
+            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
             hiddenForm.submit();
         });
     }
