@@ -1,27 +1,4 @@
-function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
-  
-  // Добавляем дату и время
-  var currentDate = new Date();
-  
-  // Записываем данные в таблицу
-  sheet.appendRow([
-    data.city,
-    data.vacancy,
-    data.citizenship,
-    data.firstname,
-    data.lastname,
-    data.phone,
-    currentDate
-  ]);
-  
-  // Возвращаем успешный ответ
-  return ContentService.createTextOutput(JSON.stringify({
-    'result': 'success',
-    'message': 'Заявка успешно отправлена!'
-  })).setMimeType(ContentService.MimeType.JSON);
-}document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Функциональность селектора городов
     const cityInput = document.getElementById('cityInput');
     const dropdownToggle = document.getElementById('dropdownToggle');
