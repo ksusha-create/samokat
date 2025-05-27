@@ -135,44 +135,47 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Отправка данных в Google Sheets
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData),
-                mode: 'cors' // Явно указываем режим CORS
-            })
-            .then(response => {
-                console.log('Статус ответа:', response.status);
-                console.log('Заголовки ответа:', response.headers);
-                
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => {
-                        throw new Error('Ошибка при отправке данных: ' + response.status + ' ' + text);
-                    });
-                }
-            })
-            .then(data => {
-                // Успешная отправка
-                console.log('Успех:', data);
+            // Создаем скрытый iframe для отправки формы без открытия нового окна
+            const iframeName = 'hidden_iframe_' + Date.now();
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.name = iframeName;
+            document.body.appendChild(iframe);
+            
+            // Создаем форму для отправки данных
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = scriptURL;
+            hiddenForm.target = iframeName; // привязываем к нашему iframe
+            
+            // Добавляем данные в форму
+            const dataInput = document.createElement('input');
+            dataInput.type = 'hidden';
+            dataInput.name = 'data';
+            dataInput.value = encodeURIComponent(JSON.stringify(formData));
+            hiddenForm.appendChild(dataInput);
+            
+            // Добавляем форму в DOM
+            document.body.appendChild(hiddenForm);
+            
+            // Устанавливаем обработчик для iframe
+            iframe.onload = function() {
+                // Показываем сообщение об успешной отправке
+                console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
-            })
-            .catch(error => {
-                // Ошибка при отправке
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке заявки: ' + error.message);
-            })
-            .finally(() => {
+                
                 // Восстанавливаем кнопку
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
-            });
+                
+                // Удаляем временные элементы
+                document.body.removeChild(iframe);
+                document.body.removeChild(hiddenForm);
+            };
+            
+            // Отправляем форму
+            hiddenForm.submit();
         });
     }
 
