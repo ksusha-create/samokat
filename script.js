@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Получение данных формы
             const formData = {
-                city: document.getElementById('cityInput').value, // Обновлено для нового селектора городов
+                city: document.getElementById('cityInput').value,
                 vacancy: document.getElementById('vacancy').value,
                 citizenship: document.getElementById('citizenship').value,
                 fullname: document.getElementById('fullname').value,
@@ -132,33 +132,25 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.textContent = 'Отправка...';
             submitButton.disabled = true;
             
-            // Отображаем в консоли данные, которые будут отправлены
-            console.log('Отправляемые данные:', formData);
-            
-            // Альтернативный способ отправки - через iframe
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            
-            // Создаём форму внутри iframe с использованием encodeURIComponent для безопасной передачи данных
+            // Создаем HTML-форму для отправки
             const formHTML = `
-                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
-                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
-                    <button type="submit">Submit</button>
+                <form id="dynamic-form" action="${scriptURL}" method="POST" target="_blank">
+                    <input type="hidden" name="data" value='${JSON.stringify(formData)}'>
                 </form>
             `;
             
-            // Вставляем форму в iframe и отправляем
-            iframe.contentWindow.document.open();
-            iframe.contentWindow.document.write(formHTML);
-            iframe.contentWindow.document.close();
+            // Создаем временный div для размещения формы
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = formHTML;
+            document.body.appendChild(tempDiv);
             
-            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
+            // Находим созданную форму и отправляем её
+            const dynamicForm = document.getElementById('dynamic-form');
             
-            // Устанавливаем таймер для успешного завершения независимо от результата
+            // Обработчик для возврата на страницу
             setTimeout(function() {
-                // Показываем сообщение об успешной отправке
-                console.log('Успех: форма отправлена');
+                // Успешная отправка
+                console.log('Форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
                 
@@ -166,12 +158,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Удаляем iframe
-                document.body.removeChild(iframe);
+                // Удаляем временную форму
+                document.body.removeChild(tempDiv);
             }, 2000);
             
             // Отправляем форму
-            hiddenForm.submit();
+            dynamicForm.submit();
         });
     }
 
