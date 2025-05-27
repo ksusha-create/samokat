@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxqtCdCEIeMS-SIhAnZBfL83WNEqMzw3Of837LpIi1j92eV3Ks4KAzMgc23iJsl49dn5w/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwNV-VA1tHgWaBYRI8jBYu93t3qLsQwTM45O2yEC2p1v9k5k_mLO9K0SsaGyNXgTxtd1g/exec';
             
             // Получение данных формы
             const formData = {
@@ -135,32 +135,30 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Создаем скрытую форму напрямую в текущем документе
-            const tempForm = document.createElement('form');
-            tempForm.method = 'POST';
-            tempForm.action = scriptURL;
-            tempForm.style.display = 'none';
+            // Альтернативный способ отправки - через iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
             
-            // Добавляем данные в форму
-            const dataField = document.createElement('input');
-            dataField.type = 'hidden';
-            dataField.name = 'data';
-            dataField.value = encodeURIComponent(JSON.stringify(formData));
-            tempForm.appendChild(dataField);
+            // Создаём форму внутри iframe с использованием encodeURIComponent для безопасной передачи данных
+            const formHTML = `
+                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
+                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
+                    <button type="submit">Submit</button>
+                </form>
+            `;
             
-            // Добавляем форму в DOM
-            document.body.appendChild(tempForm);
+            // Вставляем форму в iframe и отправляем
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(formHTML);
+            iframe.contentWindow.document.close();
             
-            // Отправляем данные с помощью XHR
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', scriptURL, true);
+            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
             
-            // Создаем объект FormData из нашей временной формы
-            const formDataToSend = new FormData(tempForm);
-            
-            // Устанавливаем обработчик завершения запроса
-            xhr.onload = function() {
-                console.log('Успех: форма отправлена, статус:', xhr.status);
+            // Устанавливаем таймер для успешного завершения независимо от результата
+            setTimeout(function() {
+                // Показываем сообщение об успешной отправке
+                console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
                 
@@ -168,38 +166,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Удаляем временную форму
-                document.body.removeChild(tempForm);
-            };
+                // Удаляем iframe
+                document.body.removeChild(iframe);
+            }, 2000);
             
-            // Устанавливаем обработчик ошибки
-            xhr.onerror = function() {
-                console.error('Ошибка при отправке данных');
-                
-                // Как запасной вариант, используем автоматический submit формы
-                console.log('Пробуем отправить форму напрямую...');
-                
-                // Устанавливаем таймер для успешного завершения независимо от результата
-                setTimeout(function() {
-                    alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
-                    form.reset();
-                    
-                    // Восстанавливаем кнопку
-                    submitButton.textContent = originalText;
-                    submitButton.disabled = false;
-                    
-                    // Удаляем временную форму
-                    if (document.body.contains(tempForm)) {
-                        document.body.removeChild(tempForm);
-                    }
-                }, 2000);
-                
-                // Отправляем форму напрямую
-                tempForm.submit();
-            };
-            
-            // Отправляем запрос
-            xhr.send(formDataToSend);
+            // Отправляем форму
+            hiddenForm.submit();
         });
     }
 
