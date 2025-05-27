@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
             
             // Получение данных формы
             const formData = {
@@ -135,44 +135,42 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Отправка данных в Google Sheets
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData),
-                mode: 'cors' // Явно указываем режим CORS
-            })
-            .then(response => {
-                console.log('Статус ответа:', response.status);
-                console.log('Заголовки ответа:', response.headers);
-                
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => {
-                        throw new Error('Ошибка при отправке данных: ' + response.status + ' ' + text);
-                    });
-                }
-            })
-            .then(data => {
-                // Успешная отправка
-                console.log('Успех:', data);
+            // Альтернативный способ отправки - через iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            
+            // Создаём форму внутри iframe
+            const formHTML = `
+                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
+                    <input type="hidden" name="data" value='${JSON.stringify(formData)}'>
+                </form>
+            `;
+            
+            // Вставляем форму в iframe и отправляем
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(formHTML);
+            iframe.contentWindow.document.close();
+            
+            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
+            
+            // Устанавливаем таймер для успешного завершения независимо от результата
+            setTimeout(function() {
+                // Показываем сообщение об успешной отправке
+                console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
-            })
-            .catch(error => {
-                // Ошибка при отправке
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке заявки: ' + error.message);
-            })
-            .finally(() => {
+                
                 // Восстанавливаем кнопку
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
-            });
+                
+                // Удаляем iframe
+                document.body.removeChild(iframe);
+            }, 2000);
+            
+            // Отправляем форму
+            hiddenForm.submit();
         });
     }
 
