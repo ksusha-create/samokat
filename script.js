@@ -100,11 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = '[https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';](https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';)
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
             
             // Получение данных формы
             const formData = {
-                city: document.getElementById('cityInput').value,
+                city: document.getElementById('cityInput').value, // Обновлено для нового селектора городов
                 vacancy: document.getElementById('vacancy').value,
                 citizenship: document.getElementById('citizenship').value,
                 fullname: document.getElementById('fullname').value,
@@ -135,24 +135,29 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Стандартный способ отправки формы
-            const tempForm = document.createElement('form');
-            tempForm.method = 'POST';
-            tempForm.action = scriptURL;
-            tempForm.target = '_blank'; // Откроет новое окно
+            // Альтернативный способ отправки - через iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
             
-            // Добавляем данные в форму
-            const dataField = document.createElement('input');
-            dataField.type = 'hidden';
-            dataField.name = 'data';
-            dataField.value = encodeURIComponent(JSON.stringify(formData));
-            tempForm.appendChild(dataField);
+            // Создаём форму внутри iframe с использованием encodeURIComponent для безопасной передачи данных
+            const formHTML = `
+                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
+                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
+                    <button type="submit">Submit</button>
+                </form>
+            `;
             
-            // Добавляем форму в DOM
-            document.body.appendChild(tempForm);
+            // Вставляем форму в iframe и отправляем
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(formHTML);
+            iframe.contentWindow.document.close();
             
-            // Устанавливаем таймер для успешного завершения
+            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
+            
+            // Устанавливаем таймер для успешного завершения независимо от результата
             setTimeout(function() {
+                // Показываем сообщение об успешной отправке
                 console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
@@ -161,13 +166,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Удаляем временную форму
-                document.body.removeChild(tempForm);
+                // Удаляем iframe
+                document.body.removeChild(iframe);
             }, 2000);
             
             // Отправляем форму
-            tempForm.submit();
+            hiddenForm.submit();
         });
     }
 
     // Интерактивные карточки вакансий
+    const vacancyCards = document.querySelectorAll('.vacancy-card');
+    vacancyCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const vacancyTitle = this.querySelector('h3').textContent;
+            const vacancySelect = document.getElementById('vacancy');
+            
+            // Скролл к форме заявки
+            const formElement = document.getElementById('application-form');
+            if (formElement) {
+                window.scrollTo({
+                    top: formElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Выбор соответствующей вакансии в выпадающем списке
+            if (vacancySelect) {
+                for (let i = 0; i < vacancySelect.options.length; i++) {
+                    if (vacancySelect.options[i].text === vacancyTitle) {
+                        vacancySelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        });
+    });
+});
