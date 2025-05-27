@@ -107,14 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 city: document.getElementById('cityInput').value, // Обновлено для нового селектора городов
                 vacancy: document.getElementById('vacancy').value,
                 citizenship: document.getElementById('citizenship').value,
-                firstname: document.getElementById('firstname').value,
-                lastname: document.getElementById('lastname').value,
+                fullname: document.getElementById('fullname').value,
                 age: document.getElementById('age').value,
                 phone: document.getElementById('phone').value
             };
             
             // Проверка заполнения формы
-            const requiredFields = ['firstname', 'lastname', 'phone'];
+            const requiredFields = ['fullname', 'phone'];
             const emptyFields = requiredFields.filter(field => !formData[field]);
             
             if (emptyFields.length > 0) {
