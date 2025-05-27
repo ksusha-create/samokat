@@ -123,7 +123,7 @@ function doPost(e) {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwLLZQ_ue-aMFVqb41sa1GALfiM4bM9jKCsRfHFa_7vuezJKB8eIzYdnvBjf8eVCXk2Yg/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwX-tcuj80ghKW1w9diuxRIn7Nuf5gnd5Jq71ERRGcKb6Gv7YxzAEXwGOBeFctObMroRw/exec';
             
             // Получение данных формы
             const formData = {
