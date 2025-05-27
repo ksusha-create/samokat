@@ -135,6 +135,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
+            // Предупреждаем пользователя
+            alert('Ваша заявка будет отправлена. На секунду откроется новое окно, которое можно закрыть.');
+            
             // Альтернативный способ отправки - через iframe
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
@@ -142,17 +145,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Создаём форму внутри iframe с использованием encodeURIComponent для безопасной передачи данных
             const formHTML = `
-                <form id="hidden-form" action="${scriptURL}" method="POST">
+                <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
                     <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
                     <button type="submit">Submit</button>
                 </form>
-                <script>
-                    document.getElementById('hidden-form').addEventListener('submit', function() {
-                        setTimeout(function() {
-                            window.parent.postMessage('form-submitted', '*');
-                        }, 2000);
-                    });
-                </script>
             `;
             
             // Вставляем форму в iframe и отправляем
@@ -160,27 +156,12 @@ document.addEventListener('DOMContentLoaded', function() {
             iframe.contentWindow.document.write(formHTML);
             iframe.contentWindow.document.close();
             
-            // Слушаем сообщение от iframe
-            window.addEventListener('message', function(event) {
-                if (event.data === 'form-submitted') {
-                    // Показываем сообщение об успешной отправке
-                    console.log('Успех: форма отправлена');
-                    alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
-                    form.reset();
-                    
-                    // Восстанавливаем кнопку
-                    submitButton.textContent = originalText;
-                    submitButton.disabled = false;
-                    
-                    // Удаляем iframe
-                    document.body.removeChild(iframe);
-                }
-            }, {once: true});
+            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
             
-            // Устанавливаем таймер для успешного завершения на случай, если событие не сработает
+            // Устанавливаем таймер для успешного завершения независимо от результата
             setTimeout(function() {
                 // Показываем сообщение об успешной отправке
-                console.log('Таймер: форма отправлена');
+                console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
                 
@@ -190,10 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Удаляем iframe
                 document.body.removeChild(iframe);
-            }, 5000);
+            }, 2000);
             
             // Отправляем форму
-            const hiddenForm = iframe.contentWindow.document.getElementById('hidden-form');
             hiddenForm.submit();
         });
     }
