@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
+            const scriptURL = '[https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';](https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';)
             
             // Получение данных формы
             const formData = {
@@ -135,11 +135,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Отображаем в консоли данные, которые будут отправлены
             console.log('Отправляемые данные:', formData);
             
-            // Создаем форму для отправки данных
+            // Стандартный способ отправки формы
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
             tempForm.action = scriptURL;
-            tempForm.style.display = 'none';
+            tempForm.target = '_blank'; // Откроет новое окно
             
             // Добавляем данные в форму
             const dataField = document.createElement('input');
@@ -151,20 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Добавляем форму в DOM
             document.body.appendChild(tempForm);
             
-            // Отправляем форму и перехватываем результат
-            const formSubmitHandler = function(callback) {
-                // Устанавливаем таймер для успешного завершения
-                setTimeout(function() {
-                    callback();
-                }, 2000);
-                
-                // Отправляем форму
-                tempForm.submit();
-            };
-            
-            // Отправляем данные
-            formSubmitHandler(function() {
-                // Показываем сообщение об успешной отправке
+            // Устанавливаем таймер для успешного завершения
+            setTimeout(function() {
                 console.log('Успех: форма отправлена');
                 alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
                 form.reset();
@@ -174,38 +162,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.disabled = false;
                 
                 // Удаляем временную форму
-                if (document.body.contains(tempForm)) {
-                    document.body.removeChild(tempForm);
-                }
-            });
+                document.body.removeChild(tempForm);
+            }, 2000);
+            
+            // Отправляем форму
+            tempForm.submit();
         });
     }
 
     // Интерактивные карточки вакансий
-    const vacancyCards = document.querySelectorAll('.vacancy-card');
-    vacancyCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const vacancyTitle = this.querySelector('h3').textContent;
-            const vacancySelect = document.getElementById('vacancy');
-            
-            // Скролл к форме заявки
-            const formElement = document.getElementById('application-form');
-            if (formElement) {
-                window.scrollTo({
-                    top: formElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            }
-            
-            // Выбор соответствующей вакансии в выпадающем списке
-            if (vacancySelect) {
-                for (let i = 0; i < vacancySelect.options.length; i++) {
-                    if (vacancySelect.options[i].text === vacancyTitle) {
-                        vacancySelect.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-        });
-    });
-});
