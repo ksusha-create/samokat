@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbw0KVij3M0m5ofRmj4bwpikW6q-Auj1HrZPQkverlvaK1Iygl2gfNqU_bTjG8KDtYt63w/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyYVHCFajrNHqNbxjPl24704YBYuzYottQl27wyxzZKbdoPCmgMNjhIxG6jZT2r9ojBaQ/exec';
             
             // Получение данных формы
             const formData = {
@@ -140,10 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
             iframe.style.display = 'none';
             document.body.appendChild(iframe);
             
-            // Создаём форму внутри iframe
+            // Создаём форму внутри iframe с экранированием значений
             const formHTML = `
                 <form id="hidden-form" action="${scriptURL}" method="POST" target="_blank">
-                    <input type="hidden" name="data" value='${JSON.stringify(formData)}'>
+                    <input type="hidden" name="data" value="${encodeURIComponent(JSON.stringify(formData))}">
+                    <button type="submit">Submit</button>
                 </form>
             `;
             
