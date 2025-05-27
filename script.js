@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbw3PSCPcTojL8R0wANk7y8nwut-EONm77t7wkYjLCjSDB2Njgn7Fmt-Q4zF_VWTj9Pn_g/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxXk1G1eVwGDRwR53LIH6L3YQVXufxhE15wfhac2-XQdGZU0hSICD7BvjjAhdDfVppa1Q/exec';
             
             // Получение данных формы
             const formData = {
